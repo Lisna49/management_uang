@@ -1,206 +1,255 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Keuangan Pribadi</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        input, select, button {
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-        }
-        button {
-            background: #28a745;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #218838;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-        th {
-            background: #007bff;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Keuangan Pribadi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 950px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    h2, h3 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      min-width: 150px;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .reset-btn {
+      background: red;
+    }
+
+    .input-group {
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      input, select, button {
+        width: 100%;
+        margin: 5px 0;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        background: #007bff;
+      }
+
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Sistem Keuangan Pribadi</h2>
-        <h3>Saldo: <span id="saldo">Rp 0</span></h3>
-        <div>
-            <input type="text" id="deskripsi" placeholder="Deskripsi">
-            <input type="number" id="jumlah" placeholder="Jumlah">
-            <select id="tipe" onchange="toggleKategori()">
-                <option value="pemasukan">Pemasukan</option>
-                <option value="pengeluaran">Pengeluaran</option>
-            </select>
-            <button onclick="tambahTransaksi()">Tambah</button>
-            <button onclick="resetKeuangan()" style="background: red;">Reset</button>
-            <!-- Filter -->
-            <div class="input-group">
-                <label>Filter: </label>
-                <select id="filterTipe" onchange="filterTransaksi()">
-                    <option value="all">Semua</option>
-                    <option value="pemasukan">Pemasukan</option>
-                    <option value="pengeluaran">Pengeluaran</option>
-                </select>
-            </div>
+  <div class="container">
+    <h2>Sistem Keuangan Pribadi</h2>
+    <h3>Saldo: <span id="saldo">Rp 0</span></h3>
 
-<script>
-    function toggleKategori() {
-        document.getElementById('kategori').style.display = 
-            document.getElementById('tipe').value === 'pengeluaran' ? 'inline-block' : 'none';
-    }
-
-    function filterTransaksi() {
-        let tipeFilter = document.getElementById('filterTipe').value;
-        let kategoriFilter = document.getElementById('filterKategori').value;
-        let transaksiTable = document.getElementById('transaksi-list');
-        transaksiTable.innerHTML = "";
-
-        transaksiList.filter(item => 
-            (tipeFilter === 'all' || item.tipe === tipeFilter) && 
-            (kategoriFilter === 'all' || item.kategori === kategoriFilter)
-        ).forEach(item => {
-            let row = document.createElement('tr');
-            row.innerHTML = `<td>${item.deskripsi}</td><td>Rp ${item.jumlah}</td><td>${item.tipe}</td><td>${item.kategori || '-'}</td><td>${item.tanggal}</td>
-                             <td><button onclick="hapusTransaksi('${item.deskripsi}')">Hapus</button></td>`;
-            transaksiTable.appendChild(row);
-        });
-    }
-</script>
-
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Deskripsi</th>
-                    <th>Jumlah</th>
-                    <th>Tipe</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="transaksi-list"></tbody>
-        </table>
+    <div class="form-group">
+      <input type="text" id="deskripsi" placeholder="Deskripsi">
+      <input type="number" id="jumlah" placeholder="Jumlah">
+      <select id="tipe" onchange="toggleKategori()">
+        <option value="pemasukan">Pemasukan</option>
+        <option value="pengeluaran">Pengeluaran</option>
+      </select>
+      <button onclick="tambahTransaksi()">Tambah</button>
+      <button class="reset-btn" onclick="resetKeuangan()">Reset</button>
     </div>
 
-    <script>
-        let saldo = parseInt(localStorage.getItem("saldo")) || 0;
-        let transaksiList = JSON.parse(localStorage.getItem("transaksi")) || [];
-        document.getElementById('saldo').textContent = "Rp " + saldo;
-        
-        function renderTransaksi() {
-            let transaksiTable = document.getElementById('transaksi-list');
-            transaksiTable.innerHTML = "";
-            transaksiList.forEach((item, index) => {
-                let row = document.createElement('tr');
-                row.innerHTML = `<td>${item.deskripsi}</td><td>Rp ${item.jumlah}</td><td>${item.tipe}</td><td>${item.tanggal}</td>
-                                 <td><button onclick="hapusTransaksi(${index})">Hapus</button></td>`;
-                transaksiTable.appendChild(row);
-            });
-        }
-        
-        function tambahTransaksi() {
-            let deskripsi = document.getElementById('deskripsi').value;
-            let jumlah = parseInt(document.getElementById('jumlah').value);
-            let tipe = document.getElementById('tipe').value;
-            let tanggal = new Date().toLocaleDateString();
-            
-            if (!deskripsi || isNaN(jumlah)) {
-                alert("Masukkan deskripsi dan jumlah yang valid!");
-                return;
-            }
-            
-            if (tipe === "pengeluaran") {
-                saldo -= jumlah; 
-            } else {
-                saldo += jumlah;
-            }
-            
-            transaksiList.push({ deskripsi, jumlah, tipe, tanggal });
-            localStorage.setItem("saldo", saldo);
-            localStorage.setItem("transaksi", JSON.stringify(transaksiList));
-            
-            document.getElementById('saldo').textContent = "Rp " + saldo;
-            renderTransaksi();
-        }
-        
-        function hapusTransaksi(index) {
-            let transaksi = transaksiList[index];
-            if (transaksi.tipe === "pengeluaran") {
-                saldo += transaksi.jumlah;
-            } else {
-                saldo -= transaksi.jumlah;
-            }
-            
-            transaksiList.splice(index, 1);
-            localStorage.setItem("saldo", saldo);
-            localStorage.setItem("transaksi", JSON.stringify(transaksiList));
-            
-            document.getElementById('saldo').textContent = "Rp " + saldo;
-            renderTransaksi();
-        }
-        
-        function resetKeuangan() {
-            if (confirm("Apakah kamu yakin ingin mereset semua data?")) {
-                saldo = 0;
-                transaksiList = [];
-                localStorage.removeItem("saldo");
-                localStorage.removeItem("transaksi");
-                document.getElementById('saldo').textContent = "Rp 0";
-                renderTransaksi();
-            }
-        }
+    <div class="input-group">
+      <label for="filterTipe">Filter: </label>
+      <select id="filterTipe" onchange="filterTransaksi()">
+        <option value="all">Semua</option>
+        <option value="pemasukan">Pemasukan</option>
+        <option value="pengeluaran">Pengeluaran</option>
+      </select>
+    </div>
 
+    <table>
+      <thead>
+        <tr>
+          <th>Deskripsi</th>
+          <th>Jumlah</th>
+          <th>Tipe</th>
+          <th>Tanggal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="transaksi-list"></tbody>
+    </table>
+  </div>
+
+  <script>
+    let saldo = parseInt(localStorage.getItem("saldo")) || 0;
+    let transaksiList = JSON.parse(localStorage.getItem("transaksi")) || [];
+    document.getElementById('saldo').textContent = "Rp " + saldo;
+
+    function renderTransaksi() {
+      let transaksiTable = document.getElementById('transaksi-list');
+      transaksiTable.innerHTML = "";
+      transaksiList.forEach((item, index) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+          <td data-label="Deskripsi">${item.deskripsi}</td>
+          <td data-label="Jumlah">Rp ${item.jumlah}</td>
+          <td data-label="Tipe">${item.tipe}</td>
+          <td data-label="Tanggal">${item.tanggal}</td>
+          <td data-label="Aksi"><button onclick="hapusTransaksi(${index})">Hapus</button></td>`;
+        transaksiTable.appendChild(row);
+      });
+    }
+
+    function tambahTransaksi() {
+      let deskripsi = document.getElementById('deskripsi').value;
+      let jumlah = parseInt(document.getElementById('jumlah').value);
+      let tipe = document.getElementById('tipe').value;
+      let tanggal = new Date().toLocaleDateString();
+
+      if (!deskripsi || isNaN(jumlah)) {
+        alert("Masukkan deskripsi dan jumlah yang valid!");
+        return;
+      }
+
+      if (tipe === "pengeluaran" && jumlah > saldo) {
+        alert("Saldo Anda tidak mencukupi!");
+        return;
+      }
+
+      saldo = tipe === "pengeluaran" ? saldo - jumlah : saldo + jumlah;
+
+      transaksiList.push({ deskripsi, jumlah, tipe, tanggal });
+      localStorage.setItem("saldo", saldo);
+      localStorage.setItem("transaksi", JSON.stringify(transaksiList));
+
+      document.getElementById('saldo').textContent = "Rp " + saldo;
+      renderTransaksi();
+    }
+
+    function hapusTransaksi(index) {
+      let transaksi = transaksiList[index];
+      saldo = transaksi.tipe === "pengeluaran" ? saldo + transaksi.jumlah : saldo - transaksi.jumlah;
+
+      transaksiList.splice(index, 1);
+      localStorage.setItem("saldo", saldo);
+      localStorage.setItem("transaksi", JSON.stringify(transaksiList));
+
+      document.getElementById('saldo').textContent = "Rp " + saldo;
+      renderTransaksi();
+    }
+
+    function resetKeuangan() {
+      if (confirm("Apakah kamu yakin ingin mereset semua data?")) {
+        saldo = 0;
+        transaksiList = [];
+        localStorage.removeItem("saldo");
+        localStorage.removeItem("transaksi");
+        document.getElementById('saldo').textContent = "Rp 0";
         renderTransaksi();
-        function toggleKategori() {
-        document.getElementById('kategori').style.display = 
-            document.getElementById('tipe').value === 'pengeluaran' ? 'inline-block' : 'none';
+      }
     }
 
     function filterTransaksi() {
-        let tipeFilter = document.getElementById('filterTipe').value;
-        let transaksiTable = document.getElementById('transaksi-list');
-        transaksiTable.innerHTML = "";
+      let tipeFilter = document.getElementById('filterTipe').value;
+      let transaksiTable = document.getElementById('transaksi-list');
+      transaksiTable.innerHTML = "";
 
-        transaksiList.filter(item => 
-            tipeFilter === 'all' || item.tipe === tipeFilter
-        ).forEach((item, index) => {
-            let row = document.createElement('tr');
-            row.innerHTML = `<td>${item.deskripsi}</td>
-                             <td>Rp ${item.jumlah}</td>
-                             <td>${item.tipe}</td>
-                             <td>${item.tanggal}</td>
-                             <td><button onclick="hapusTransaksi(${index})">Hapus</button></td>`;
-            transaksiTable.appendChild(row);
-        });
+      transaksiList.filter(item =>
+        tipeFilter === 'all' || item.tipe === tipeFilter
+      ).forEach((item, index) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+          <td data-label="Deskripsi">${item.deskripsi}</td>
+          <td data-label="Jumlah">Rp ${item.jumlah}</td>
+          <td data-label="Tipe">${item.tipe}</td>
+          <td data-label="Tanggal">${item.tanggal}</td>
+          <td data-label="Aksi"><button onclick="hapusTransaksi(${index})">Hapus</button></td>`;
+        transaksiTable.appendChild(row);
+      });
     }
 
-    </script>
+    function toggleKategori() {
+      // Kosong untuk sekarang (jika butuh kategori tambahan nanti bisa isi di sini)
+    }
+
+    renderTransaksi();
+  </script>
 </body>
 </html>
